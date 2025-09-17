@@ -651,15 +651,23 @@
         if (target === 'penjualan-tab') {
           $('#penjualan-tab').tab('show');
           refreshRiwayatPenjualan();
+          refreshDropdownBarang(); // Pastikan dropdown di-refresh saat beralih ke tab penjualan
         } else if (target === 'stok-tab') {
           $('#stok-tab').tab('show');
         }
+      });
+
+      // Event listener khusus untuk tab penjualan
+      $('#penjualan-tab').on('shown.bs.tab', function (e) {
+        refreshDropdownBarang();
+        refreshRiwayatPenjualan();
       });
 
       // Go to sales button
       $("#btnGotoPenjualan").click(function() {
         $('#penjualan-tab').tab('show');
         refreshRiwayatPenjualan();
+        refreshDropdownBarang(); // Pastikan dropdown di-refresh saat beralih ke tab penjualan
       });
 
       // Refresh button click
@@ -883,6 +891,9 @@
       // Update sales summary
       await updateSalesSummary();
       
+      // Refresh dropdown barang
+      refreshDropdownBarang();
+      
       // Add event listeners to action buttons
       $(".btn-edit").click(async function() {
         const id = $(this).data("id");
@@ -922,6 +933,7 @@
 
     // Function to refresh dropdown barang
     function refreshDropdownBarang() {
+      console.log("Refresh dropdown barang dipanggil");
       const dropdown = $("#barangSelect");
       dropdown.empty();
       dropdown.append('<option value="">-- Pilih Barang --</option>');
@@ -931,6 +943,7 @@
           dropdown.append(`<option value="${barang.id}">${barang.nama}</option>`);
         }
       });
+      console.log("Dropdown barang diisi dengan " + daftarBarang.length + " barang");
     }
 
     // Function to refresh keranjang
